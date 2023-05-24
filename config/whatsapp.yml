@@ -1,0 +1,11 @@
+url: https://web.whatsapp.com
+
+selectors:
+  sidebar: "#pane-side"
+  current_chat_name: "._21nHd > span:nth-child(1)"
+  chat_names_in_sidebar: "._21S-L span"
+  sidebar_chat: "._8nE1Y"
+  message_input: "._3Uu1_ > div:nth-child(1) > div:nth-child(1)"
+  message_text: "._21Ahp>span[dir=\"ltr\"]>span"
+  message: ".hY_ET"
+  delivered: "span[aria-label=\" Delivered \"]"

@@ -1,0 +1,32 @@
+# configure the web browser which runs the WhatsApp Web bot
+
+# turn this to "true" to run the browser without GUI (experimental)
+headless: false
+
+# ? you need to install Firefox and geckodriver.
+# ! Chrome(-driver) is not supported, as it has some issues
+firefox:
+  # ? Download geckodriver from: https://github.com/mozilla/geckodriver/releases
+
+  # ---
+  # Geckodriver repository: https://github.com/mozilla/geckodriver
+  # Info about geckodriver: https://firefox-source-docs.mozilla.org/testing/geckodriver/
+  # Info about geckodriver's supported platforms: https://firefox-source-docs.mozilla.org/testing/geckodriver/Support.html
+  # ---
+
+
+
+  # open about:profiles in Firefox
+  # choose any profile except for "default" ("default-release" is alright, though) or create a new one.
+  # click the "Open Folder" next to the blue field "Root Directory"
+  # copy the path to the folder and paste it here
+  profile: 'C:\Users\Lynx\AppData\Roaming\Mozilla\Firefox\Profiles\zi5uozpw.default-release'
+
+  # the path to your firefox.exe.
+  # if you're running x64 Windows, you probably don't need to change it.
+  # here's more info on that: https://support.mozilla.org/en-US/questions/1276424
+  binary: 'C:\Program Files\Mozilla Firefox\firefox.exe'
+
+  # see above. make sure not to use the .zip archive, but the actual executable! 
+  driver: C:\Users\Lynx\Documents\Apps\selenium\geckodriver.exe
+

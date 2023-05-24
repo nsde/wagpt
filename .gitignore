@@ -1,4 +1,7 @@
 *.log
+logs/*
+
+!.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

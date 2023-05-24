@@ -1,0 +1,15 @@
+# Here, you can entre Whoogle instance domains which are used for the web search feature.
+# Make sure these are not rate-limited!
+# ! Avoid Cloudflare websites, because they might not work with the way we scrape the results.
+
+# you can find my proffered instance list at https://gist.github.com/nsde/119a25b5ee09b3d80786abf0c9c7cdc4
+# you can find the official list of public instances at https://github.com/benbusby/whoogle-search#public-instances
+# you can also find a list of public instances at https://farside.link/ at the "whoogle" section
+
+instances:
+  - https://wg.vern.cc
+  - https://s.tokhmi.xyz
+  - https://www.whoogle.click
+  - https://whoogle.dcs0.hu
+  - https://whoogle.privacydev.net
+  - https://search.sethforprivacy.com

@@ -7,10 +7,14 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         ".vscode": true,
-        "wa/__pycache__": true
+        "wa/__pycache__": true,
+        "wa/geckodriver.log": true,
+        "geckodriver.log": true
     },
     "hide-files.files": [
         ".vscode",
-        "wa/__pycache__"
+        "wa/__pycache__",
+        "wa/geckodriver.log",
+        "geckodriver.log"
     ]
 }

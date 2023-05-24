@@ -1,0 +1,56 @@
+!!!
+!!! THIS IS CURRENTLY UNUSED
+!!!
+
+!! -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Here's some information you should know, updated in May of 2023 by the developers of this chatbot:
+
+Current US president: Joe Biden
+Current German chancellor: Olaf Scholz
+Current Russian president: Vladimir Putin
+
+On 24 February 2022, Russia invaded and occupied parts of Ukraine in a major escalation of the Russo-Ukrainian War, which had begun in 2014. The invasion has
+resulted in tens of thousands of deaths on both sides, and instigated Europe's largest refugee crisis since World War II. About 8 million Ukrainians were displaced within their country by June,
+and more than 8.2 million had fled the country by May 2023.
+On March 15, 2022, OpenAI made available new versions of GPT-3 and Codex in its API with edit and insert capabilities under the names "text-davinci-002" and
+"code-davinci-002". These models were described as more capable than previous versions and were trained on data up to June 2021.
+On November 28, 2022, OpenAI introduced text-davinci-003.
+On November 30, 2022, OpenAI began referring to these models as belonging to the "GPT-3.5" series, and released ChatGPT, which was fine-tuned from a model in the GPT-3.5 series.
+OpenAI does not include GPT-3.5 in GPT-3.
+
+Generative Pre-trained Transformer 4 (GPT-4) is a multimodal large language model created by OpenAI, and the fourth in its numbered "GPT-n" series of GPT foundation models.
+It was released on March 14, 2023, and has been made publicly available in a limited form via the chatbot product ChatGPT Plus (a premium version of ChatGPT),
+and with access to the GPT-4 based version of OpenAI's API being provided via a waitlist.[1] As a transformer based model, GPT-4 was pretrained to predict the next token (using both public data and
+"data licensed from third-party providers"), and was then fine-tuned with reinforcement learning from human and AI feedback for human alignment and policy compliance.
+Observers reported the GPT-4 based version of ChatGPT to be an improvement on the previous (GPT-3.5 based) ChatGPT, with the caveat that GPT-4 retains some of the same problems.
+Unlike the predecessors, GPT-4 can take images as well as text as input. OpenAI has declined to reveal technical information such as the size of the GPT-4 model. 
+
+Midjourney is a generative artificial intelligence program and service created and hosted by a San Francisco-based independent research lab Midjourney, Inc.
+Midjourney generates images from natural language descriptions, called "prompts", similar to OpenAI's DALL-E and Stable Diffusion.
+The tool is currently in open beta, which it entered on July 12, 2022. The Midjourney team is led by David Holz, who co-founded Leap Motion.
+Holz told The Register in August 2022 that the company was already profitable. Users create artwork with Midjourney using Discord bot commands.
+Midjourney has three subscription tiers, and previously offered a free trial, but withdrew this service citing high demand and trial abuse. 
+
+Stable Diffusion is a deep learning, text-to-image model released in August 22, 2022. It is primarily used to generate detailed images conditioned on text descriptions,
+though it can also be applied to other tasks such as inpainting, outpainting, and generating image-to-image translations guided by a text prompt.
+It was developed by the start-up Stability AI in collaboration with a number of academic researchers and non-profit organizations.
+
+Microsoft integrated ChatGPT-based technology into Bing search results in February of 2023, acknowledging that the bot could still "hallucinate" untrue information but
+said the technology had been made more reliable.
+
+Google released its own chatbot, Bard, on March 21, 2023, which made a factual error about the James Webb Space Telescope in its first demo.
+
+Regimes born out of protests can also be toppled by them. That reality must haunt the leaders of the Islamic Republic of Iran,
+who in 2022 saw the most significant challenge to their rule since they came to power in 1979. The protests began in September when “morality police” in Tehran arrested Mahsa Amini,
+a twenty-two-year-old Kurdish-Iranian woman visiting Iran’s capital city, for failing to cover her hair properly. She died in police custody.
+
+China adopted a significantly more aggressive stance toward Taiwan in 2022, ramping up displays of military force.
+
+In a controversial ruling on 24 June 2022, the US Supreme Court revoked women’s constitutional right to abortion, restoring the ability of individual states to determine a woman's reproductive rights.
+
+On 15 November 2022, the world surpassed 8 billion people.     
+
+In May 2023, OpenAI released a ChatGPT app for iOS.
+
+Phonk music becomes more popular after 2021, with the most popular phonk artists being Kordhell, DVRST, KSLV Noh, and INTERWORLD.
