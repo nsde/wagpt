@@ -1,196 +1,134 @@
-"""WhatsApp Selenium Script"""
+"""WA Selenium Script"""
 
-import os
-import bs4
 import time
 import selenium.webdriver
-import undetected_chromedriver as uc
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 
-SELECT = {
-    'sidebar': '#pane-side',
-    'current_chat_name': '._21nHd > span:nth-child(1)',
-    'chat_names_in_sidebar': '._21S-L span',
-    'sidebar_chat': '._8nE1Y',
-    'message_input': '._3Uu1_ > div:nth-child(1) > div:nth-child(1)',
-    'message': '._21Ahp>span[dir="ltr"]>span',
-    'delivered': 'span[aria-label=" Delivered "]',
-}
+from rich import print
+from dotenv import load_dotenv
 
-# USER_DATA_DIR = r'C:\Users\User\AppData\Local\Google\Chrome\User Data\Default'.replace('User', os.getlogin())
+import chats
+import utils
+import config
 
-CONFIG = {
-    'firefox_driver': r'C:\Users\Lynx\Documents\Apps\selenium\geckodriver.exe',
-    'firefox_profile': r'C:\\Users\\Lynx\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\zi5uozpw.default-release'
-}
+load_dotenv()
 
-class WhatsAppBot:
-    """WhatsApp Selenium Bot"""
+class WABot:
+    """WA Selenium Bot"""
 
     def __init__(self) -> None:
         """Prepares the driver"""
 
+        print('[bold green]Welcome to WABot! Starting...[/bold green]')
+        browser_config = config.read('browser')
+        print(browser_config)
+
+        # main options
         options = FirefoxOptions()
-        #options.add_argument('--headless')
-        # options.add_argument(f'--user-data-dir={USER_DATA_DIR}')
-        options.binary_location = r'C:\Program Files\Mozilla Firefox\firefox.exe'
+        
+        if browser_config['headless']:
+            options.add_argument('--headless')
+
+        options.binary_location = browser_config['firefox']['binary'].replace('\\', '\\')
 
         # stay logged in
-        options.add_argument(f'--user-data-dir={CONFIG["firefox_profile"]}')
-        options.add_argument('--profile-directory=Default')
+        firefox_profile = selenium.webdriver.FirefoxProfile(browser_config['firefox']['profile'].replace('\\', '\\'))
 
-        # make it undetectable
-        options.add_argument('--disable-blink-features=AutomationControlled')
-        options.add_argument('--disable-infobars')
-        options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--disable-browser-side-navigation')
+        print('[green]WA Selenium Bot is starting...[/green]')
 
-        firefox_profile = selenium.webdriver.FirefoxProfile(CONFIG['firefox_profile'])
+        self.driver = selenium.webdriver.Firefox(
+            firefox_profile=firefox_profile,
+            executable_path=browser_config['firefox']['driver'].replace('\\', '\\'),
+            options=options
+        )
 
-        self.driver = selenium.webdriver.Firefox(firefox_profile=firefox_profile, executable_path=CONFIG['firefox_driver'], options=options)
-        self.driver.get('https://web.whatsapp.com')
+        print('[bold green]WA Selenium Bot started![/bold green]')
 
-        self.wait_for(SELECT['sidebar'], 20)
+        self.driver.get(config.read('whatsapp')['url'])
 
-    def wait_for(self, css_selector: str, timeout: int=5):
-        """Waits for an element to appear"""
+        utils.wait_for(self.driver, utils.SELECT['sidebar'], 20)
 
-        element_visible = EC.visibility_of_element_located((By.CSS_SELECTOR, css_selector))
-
-        try:
-            WebDriverWait(self.driver, timeout).until(element_visible)
-        except selenium.common.exceptions.TimeoutException as exc:
-            raise TimeoutError(f'Element {css_selector} loading timed out.') from exc
+        print('[bold green]WA Selenium Bot is ready![/bold green]')
 
     @property
-    def chats(self) -> list:
+    def list_chat_names(self) -> list:
         """Returns a list of chat names"""
 
-        soup = bs4.BeautifulSoup(self.driver.page_source, 'html.parser')
-        return [chat.text for chat in soup.select(SELECT['chat_names_in_sidebar'])]
-
-    def open_chat(self, chat: str) -> None:
-        """Sets the current chat"""
-
-        chat_name_elements = self.driver.find_elements(By.CSS_SELECTOR, SELECT['chat_names_in_sidebar'])
-
-        for element in chat_name_elements:
-            if element.text == chat:
-                element.click()
-                break
-
-        self.wait_for(SELECT['message_input'], 3)
-
-    def send_message(self, message: str) -> None:
-        """Sends a message to the current chat"""
-
-        if not message:
-            return
-
-        old_amount_of_sent_messages = self.sent_messages
-
-        element = self.driver.find_element(By.CSS_SELECTOR, SELECT['message_input'])
-        element.send_keys(message)
-
-        time.sleep(0.1)
-        element.send_keys(Keys.ENTER)
-
-        for _ in range(500):
-            if self.sent_messages > old_amount_of_sent_messages:
-                break
-            else:
-                time.sleep(0.1)
-        else:
-            raise TimeoutError('Message was not sent.')
-
-    def send_message_to(self, chat: str, message: str) -> None:
-        """Sends a message to a chat"""
-
-        self.open_chat(chat)
-        self.send_message(message)
+        chat_names = self.driver.find_elements(By.CSS_SELECTOR, utils.SELECT['chat_names_in_sidebar'])
+        return [chat.text for chat in chat_names]
 
     def check_for_message_from_other_chat(self) -> bool:
         """Opens the chat if there is a new message in another chat."""
 
-        chat_elements = self.driver.find_elements(By.CSS_SELECTOR, SELECT['sidebar_chat'])
+        chat_elements = self.driver.find_elements(By.CSS_SELECTOR, utils.SELECT['sidebar_chat'])
 
         for element in chat_elements:
             if element.find_elements(By.CSS_SELECTOR, '[data-testid="icon-unread-count"]'):
                 element.click()
+                time.sleep(1)
                 return True
 
         return False
 
-    @property
-    def message_count(self) -> bool:
-        """Returns the amount of messages in the current chat"""
-
-        try:
-            self.wait_for(SELECT['message'], 1)
-        except TimeoutError:
-            return 0
-
-        return len(self.driver.find_elements(By.CSS_SELECTOR, SELECT['message']))
-
-    @property
-    def last_message(self) -> str:
-        """Returns the last message in the current chat"""
-
-        self.wait_for(SELECT['message'])
-
-        messages = self.driver.find_elements(By.CSS_SELECTOR, SELECT['message'])
-        return messages[-1].text
-
-    def wait_for_new_message(self) -> str:
+    def wait_for_new_message(self):
         """Waits and returns a new message in the current chat or in other chats"""
 
+        last_message_id = None
+        chat = chats.WAChat(self.driver)
+        if chat.is_open:
+            last_message_id = chat.last_message_id
+
         while True:
-            old_amount_of_messages = self.message_count
             time.sleep(0.1)
 
-            if not self.check_for_message_from_other_chat():
-                print('no new message in other chats')
-                amount_of_messages = self.message_count
-
-                if amount_of_messages > old_amount_of_messages:
-                    break
-            else:
+            if self.check_for_message_from_other_chat():
                 break
 
-        print('new message')
-        return self.last_message
+            chat = chats.WAChat(self.driver)
+            if chat.is_open:
+                if not last_message_id:
+                    last_message_id = chat.last_message_id
 
-class Chat:
-    def __init__(self, bot: WhatsAppBot):
-        self.bot = bot
-        self.driver = bot.driver
+                if chat.last_message_id != last_message_id:
+                    break
 
-    @property
-    def name(self):
-        """Current chat name"""
-        return self.bot.driver.find_element_by_css_selector(SELECT['current_chat_name']).text
+        chat = chats.WAChat(self.driver)
+        return {
+            'chat': chat.name,
+            'text': chat.last_message,
+            'id': chat.last_message_id
+        }
 
-    @property
-    def count_messages_sent(self) -> int:
-        """Returns amount of sent messages in the current chat"""
+    def send(self, message: str, channel: str=None):
+        """Sends a message to the current chat"""
 
-        soup = bs4.BeautifulSoup(self.driver.page_source, 'html.parser')
-        return len(soup.select(SELECT['delivered']))
+        if channel:
+            chats.WAChat(self.driver, channel).send_message(message)
+        else:
+            chats.WAChat(self.driver).send_message(message)
 
+    # let's make a decorator available for receiving messages. optionally, we can pass a channel name
+    # and the decorator will only receive messages from that channel
+
+    def on_message(self, func, channel: str=None):
+        """Decorator for receiving messages"""
+
+        if channel:
+            while True:
+                message = self.wait_for_new_message()
+
+                if message['chat'] == channel:
+                    func(message)
+        else:
+            while True:
+                func(self.wait_for_new_message())
 
 if __name__ == '__main__':
-    bot = WhatsAppBot()
+    wa_bot = WABot()
 
     while True:
-        print(bot.wait_for_new_message())
-
-    # send_message_to('AaNewNumber', 'diese nachricht habe ich mit python gesendet lel')
-
-    time.sleep(999999)
+        msg = wa_bot.wait_for_new_message()
+        print(msg)
+        chats.WAChat(wa_bot.driver, msg['chat']).send_message(msg['text'])
