@@ -1,5 +1,7 @@
 *.log
+
 logs/*
+temp/*
 conversations/*
 
 !.gitkeep
