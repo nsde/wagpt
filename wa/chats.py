@@ -86,6 +86,20 @@ class WAChat:
             if message.get_attribute('data-id').startswith('false_'):
                 return message.get_attribute('data-id')
 
+    def _fallback_send_message(self, element, message_text: str) -> None:
+        for char in message_text:
+            if emoji.emoji_count(char): # is an emoji
+                emoji_unicode = emoji.demojize(char)[:-1]
+
+                for char in emoji_unicode:
+                    element.send_keys(char)
+                time.sleep(0.1)
+                element.send_keys(Keys.TAB)
+                time.sleep(0.1)
+
+            else:
+                element.send_keys(char)
+
     def send_message(self, message_text: str) -> None:
         """Sends a message to the current chat"""
 
@@ -97,23 +111,14 @@ class WAChat:
         element = self.driver.find_element(By.CSS_SELECTOR, utils.SELECT['message_input'])
         utils.wait_for(self.driver, utils.SELECT['message_input'], 3)
 
-        # for char in message_text:
-        #     if emoji.emoji_count(char): # is an emoji
-        #         emoji_unicode = emoji.demojize(char)[:-1]
-
-        #         for char in emoji_unicode:
-        #             element.send_keys(char)
-        #         time.sleep(0.1)
-        #         element.send_keys(Keys.TAB)
-        #         time.sleep(0.1)
-
-        #     else:
-        #         element.send_keys(char)
-
-
-        pyperclip.copy(message_text)
-        element.send_keys(Keys.CONTROL, 'v')
-        element.send_keys(Keys.ENTER)
+        try:
+            pyperclip.copy(message_text)
+        except pyperclip.PyperclipWindowsException as exc: # exception is raised when the PC is locked (https://github.com/asweigart/pyperclip/issues/119#issuecomment-572159273)
+            if 'success' in str(exc): # not actually success, but it's the only way to check if the exception is raised because the PC is locked
+                self._fallback_send_message(element, message_text)
+        else:
+            element.send_keys(Keys.CONTROL, 'v')
+            element.send_keys(Keys.ENTER)
 
         for _ in range(500):
             if self.count_messages_sent > old_amount_of_sent_messages:

@@ -13,8 +13,8 @@ MODEL = os.getenv('OPENAI_MODEL') or 'gpt-3.5-turbo'
 def read_log(user: str) -> list:
     """Returns the log for a user."""
 
-    if os.path.exists(f'logs/{user}.yml'):
-        with open(f'logs/{user}.yml', 'r', encoding='utf8') as log_file:
+    if os.path.exists(f'conversations/{user}.yml'):
+        with open(f'conversations/{user}.yml', 'r', encoding='utf8') as log_file:
             return yaml.load(log_file, Loader=yaml.FullLoader)
 
     return []
@@ -24,15 +24,15 @@ def add_to_log(content: dict, user: str) -> None:
 
     assert content['role'] in ['user', 'system', 'assistant'], 'Invalid AI conversation role'
 
-    if os.path.exists(f'logs/{user}.yml'):
-        with open(f'logs/{user}.yml', 'r', encoding='utf8') as log_file:
+    if os.path.exists(f'conversations/{user}.yml'):
+        with open(f'conversations/{user}.yml', 'r', encoding='utf8') as log_file:
             log = yaml.load(log_file, Loader=yaml.FullLoader)
     else:
         log = []
 
     log.append(content)
 
-    with open(f'logs/{user}.yml', 'w', encoding='utf8') as log_file:
+    with open(f'conversations/{user}.yml', 'w', encoding='utf8') as log_file:
         yaml.dump(log, log_file)
 
 def prepare_ai_chat(input_message: str, user: str) -> list:
